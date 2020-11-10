@@ -10,6 +10,7 @@ defmodule Faulty.Application do
     children = [
       # Starts a worker by calling: Faulty.Worker.start_link(arg)
       # {Faulty.Worker, arg}
+      {Faulty.TCPServer, [{127, 0, 0, 1}, 7880]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
