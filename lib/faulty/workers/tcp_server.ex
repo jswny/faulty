@@ -14,7 +14,6 @@ defmodule Faulty.TCPServer do
     }
   end
 
-  @spec start_link(any) :: :ignore | {:error, any} | {:ok, pid}
   def start_link(_opts) do
     {address, port} = Utils.get_network_config(@app_name)
     GenServer.start_link(__MODULE__, [address, port], [])
