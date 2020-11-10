@@ -1,17 +1,15 @@
 defmodule Faulty.Application do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
   @moduledoc false
 
   use Application
+  require Logger
 
   @impl true
   def start(_type, _args) do
-    children = [
-      Faulty.TCPServer
-    ]
-
+    Logger.info("Application started")
     opts = [strategy: :one_for_one, name: Faulty.Supervisor]
-    Supervisor.start_link(children, opts)
+    Faulty.Supervisor.start_link(opts)
+
+    Faulty.Supervisor.start_child(:tcp_server)
   end
 end
