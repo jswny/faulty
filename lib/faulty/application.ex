@@ -8,8 +8,10 @@ defmodule Faulty.Application do
   def start(_type, _args) do
     Logger.info("Application started")
     opts = [strategy: :one_for_one, name: Faulty.Supervisor]
-    Faulty.Supervisor.start_link(opts)
+    {:ok, pid} = Faulty.Supervisor.start_link(opts)
 
     Faulty.Supervisor.start_child(:tcp_server)
+
+    {:ok, pid}
   end
 end

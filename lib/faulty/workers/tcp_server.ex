@@ -38,15 +38,15 @@ defmodule Faulty.TCPServer do
   end
 
   @impl true
-  def handle_info({:tcp_closed, _socket}, _state) do
+  def handle_info({:tcp_closed, _socket}, state) do
     Logger.info("#{@prefix} socket closed")
-    exit(:tcp_closed)
+    {:stop, :tcp_closed, state}
   end
 
   @impl true
-  def handle_info({:tcp_error, _socket, reason}, _state) do
+  def handle_info({:tcp_error, _socket, reason}, state) do
     Logger.info("#{@prefix} connection closed because: #{reason}")
-    exit(:tcp_error)
+    {:stop, :tcp_error, state}
   end
 
   defp listen({:ok, listen_socket}, port) do
@@ -56,7 +56,7 @@ defmodule Faulty.TCPServer do
 
   defp listen({:error, reason}, port) do
     Logger.error("#{@prefix} could not listen on port #{port}, reason: #{reason}")
-    exit(:normal)
+    {:stop, reason, nil}
   end
 
   defp listen(address, port) do
