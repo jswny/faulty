@@ -6,6 +6,13 @@ defmodule Faulty.TCPServer do
   @prefix "TCP Server"
   @app_name :faulty
 
+  def child_spec() do
+    %{
+      id: __MODULE__,
+      start: {__MODULE__, :start_link, []}
+    }
+  end
+
   def start_link(_opts) do
     {address, port} = Util.get_network_config(@app_name)
     GenServer.start_link(__MODULE__, [address, port], [])
