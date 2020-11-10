@@ -38,15 +38,15 @@ defmodule Faulty.TCPServer do
   end
 
   @impl true
-  def handle_info({:tcp_closed, _socket}, state) do
+  def handle_info({:tcp_closed, _socket}, _state) do
     Logger.info("#{@prefix} socket closed")
-    {:noreply, state}
+    exit(:tcp_closed)
   end
 
   @impl true
-  def handle_info({:tcp_error, _socket, reason}, state) do
+  def handle_info({:tcp_error, _socket, reason}, _state) do
     Logger.info("#{@prefix} connection closed because: #{reason}")
-    {:noreply, state}
+    exit(:tcp_error)
   end
 
   defp listen({:ok, listen_socket}, port) do
