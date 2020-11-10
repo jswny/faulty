@@ -1,4 +1,4 @@
-defmodule Faulty.Util do
+defmodule Faulty.Utils do
   def get_network_config(app_name) when is_atom(app_name) do
     address = Application.get_env(app_name, :address, {127, 0, 0, 1})
     port = Application.get_env(app_name, :port, 50000)
