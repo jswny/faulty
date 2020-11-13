@@ -1,14 +1,23 @@
-defmodule Faulty.Supervisor do
+defmodule Faulty.TCP.ServerSupervisor do
   use DynamicSupervisor
   require Logger
+  alias Faulty.TCP
 
-  @prefix "Supervisor"
+  @prefix "Faulty TCP Server Supervisor"
+
+  def child_spec() do
+    %{
+      id: __MODULE__,
+      start: {__MODULE__, :start_link, []}
+    }
+  end
 
   def start_link(opts) do
     DynamicSupervisor.start_link(__MODULE__, opts, name: __MODULE__)
   end
 
-  def start_child(child_spec) do
+  def start_child_server() do
+    child_spec = TCP.Server
     DynamicSupervisor.start_child(__MODULE__, child_spec)
   end
 
