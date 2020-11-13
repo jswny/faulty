@@ -31,18 +31,22 @@ defmodule Faulty.TCP.Server do
   @impl true
   def handle_info({:tcp_closed, _socket}, state) do
     Logger.info("#{prefix()} socket closed")
-    {:stop, :tcp_closed, state}
+    {:stop, {:shutdown, :tcp_closed}, state}
   end
 
   @impl true
   def handle_info({:tcp_error, _socket, reason}, state) do
     Logger.info("#{prefix()} connection closed because: #{reason}")
-    {:stop, :tcp_error, state}
+    {:shutdown, {:shutdown, :tcp_error}, state}
+  end
+
+  @impl true
+  def terminate({:shutdown, reason}, _state) do
+    Logger.info("#{prefix()} stopping because: #{reason}")
   end
 
   defp prefix() do
     pid = inspect(self())
-
     "#{@prefix} with PID #{pid}"
   end
 end
