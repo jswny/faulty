@@ -4,7 +4,7 @@ defmodule Faulty.TCP.Server do
 
   @prefix "TCP Server"
 
-  def child_spec() do
+  def child_spec(_opts) do
     %{
       id: __MODULE__,
       start: {__MODULE__, :start_link, []},
@@ -12,7 +12,7 @@ defmodule Faulty.TCP.Server do
     }
   end
 
-  def start_link(_opts) do
+  def start_link() do
     GenServer.start_link(__MODULE__, [], [])
   end
 

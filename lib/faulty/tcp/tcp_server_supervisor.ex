@@ -5,15 +5,15 @@ defmodule Faulty.TCP.ServerSupervisor do
 
   @prefix "Faulty TCP Server Supervisor"
 
-  def child_spec() do
+  def child_spec(_opts) do
     %{
       id: __MODULE__,
       start: {__MODULE__, :start_link, []}
     }
   end
 
-  def start_link(opts) do
-    DynamicSupervisor.start_link(__MODULE__, opts, name: __MODULE__)
+  def start_link() do
+    DynamicSupervisor.start_link(__MODULE__, [], name: __MODULE__)
   end
 
   def start_child_server() do
