@@ -16,12 +16,13 @@ defmodule Faulty.Application do
 
     tcp_acceptor_spec =
       Supervisor.child_spec({Task, fn -> Faulty.TCP.Acceptor.accept(address, port) end},
+        id: Faulty.TCP.Acceptor,
         restart: :permanent
       )
 
     tcp_server_supervisor_spec = Faulty.TCP.ServerSupervisor
 
-    # IO.inspect(acceptor_spec)
+    IO.inspect(tcp_acceptor_spec)
 
     {:ok, _pid} = Faulty.Supervisor.start_child(tcp_server_supervisor_spec)
     {:ok, _pid} = Faulty.Supervisor.start_child(tcp_acceptor_spec)
