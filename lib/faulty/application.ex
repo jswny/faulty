@@ -1,20 +1,26 @@
 defmodule Faulty.Application do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
   @moduledoc false
 
   use Application
+  require Logger
+  alias Faulty.Utils
+  alias Faulty.TCP
 
   @impl true
   def start(_type, _args) do
-    children = [
-      # Starts a worker by calling: Faulty.Worker.start_link(arg)
-      # {Faulty.Worker, arg}
-    ]
-
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
+    Logger.info("Application started")
     opts = [strategy: :one_for_one, name: Faulty.Supervisor]
-    Supervisor.start_link(children, opts)
+    {:ok, server_pid} = Faulty.Supervisor.start_link(opts)
+
+    app_name = Application.get_application(__MODULE__)
+    {port} = Utils.get_network_config(app_name)
+
+    tcp_acceptor_spec = {TCP.Acceptor, port}
+    tcp_server_supervisor_spec = TCP.ServerSupervisor
+
+    {:ok, _pid} = Faulty.Supervisor.start_child(tcp_server_supervisor_spec)
+    {:ok, _pid} = Faulty.Supervisor.start_child(tcp_acceptor_spec)
+
+    {:ok, server_pid}
   end
 end
