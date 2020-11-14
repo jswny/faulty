@@ -39,8 +39,11 @@ jobs:
         id: plt-cache
         env:
           base-key: ${{ runner.os }}-${{ env.OTP_VERSION }}-${{ env.ELIXIR_VERSION }}-build-plt
+          plt-core-path: '_build/dev'
         with:
-          path: _build/dev/plt/dailyzer.plt
+          path: |
+            ${{ env.plt-core-path }}/dialyzer.plt
+            ${{ env.plt-core-path }}/dialyzer.plt.hash
           key: ${{ env.base-key }}-${{ hashFiles('**/mix.lock') }}
       - name: Get Dependencies
         run: mix deps.get
