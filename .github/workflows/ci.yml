@@ -11,7 +11,8 @@ jobs:
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
-      - uses: actions/setup-elixir@v1
+      - name: Setup Elixir
+        uses: actions/setup-elixir@v1
         with:
           otp-version: ${{ env.OTP_VERSION }}
           elixir-version: ${{ env.ELIXIR_VERSION }}
