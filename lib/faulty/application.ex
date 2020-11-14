@@ -4,6 +4,7 @@ defmodule Faulty.Application do
   use Application
   require Logger
   alias Faulty.Utils
+  alias Faulty.TCP
 
   @impl true
   def start(_type, _args) do
@@ -12,17 +13,10 @@ defmodule Faulty.Application do
     {:ok, server_pid} = Faulty.Supervisor.start_link(opts)
 
     app_name = Application.get_application(__MODULE__)
-    {address, port} = Utils.get_network_config(app_name)
+    {port} = Utils.get_network_config(app_name)
 
-    tcp_acceptor_spec =
-      Supervisor.child_spec({Task, fn -> Faulty.TCP.Acceptor.accept(address, port) end},
-        id: Faulty.TCP.Acceptor,
-        restart: :permanent
-      )
-
-    tcp_server_supervisor_spec = Faulty.TCP.ServerSupervisor
-
-    IO.inspect(tcp_acceptor_spec)
+    tcp_acceptor_spec = {TCP.Acceptor, port}
+    tcp_server_supervisor_spec = TCP.ServerSupervisor
 
     {:ok, _pid} = Faulty.Supervisor.start_child(tcp_server_supervisor_spec)
     {:ok, _pid} = Faulty.Supervisor.start_child(tcp_acceptor_spec)

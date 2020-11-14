@@ -1,18 +1,10 @@
 defmodule Faulty.TCP.Server do
-  use GenServer
+  use GenServer, restart: :transient
   require Logger
 
   @prefix "TCP Server"
 
-  def child_spec(_opts) do
-    %{
-      id: __MODULE__,
-      start: {__MODULE__, :start_link, []},
-      restart: :transient
-    }
-  end
-
-  def start_link() do
+  def start_link([]) do
     GenServer.start_link(__MODULE__, [], [])
   end
 

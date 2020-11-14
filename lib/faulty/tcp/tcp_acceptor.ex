@@ -1,20 +1,19 @@
 defmodule Faulty.TCP.Acceptor do
+  use Task, restart: :permanent
   require Logger
   alias Faulty.TCP
-  alias Faulty.Utils
 
   @prefix "TCP Acceptor"
 
-  def accept(address, port) do
-    with {:ok, socket} <- listen(address, port) do
-      address_string = Utils.address_tuple_to_string(address)
+  def start_link(port) when is_integer(port) do
+    Task.start_link(__MODULE__, :accept, [port])
+  end
+
+  def accept(port) do
+    with {:ok, socket} <- listen(port) do
       pid = inspect(self())
 
-      Logger.info(
-        "#{@prefix} started listening on address #{address_string} and port #{port} with PID #{
-          pid
-        }"
-      )
+      Logger.info("#{@prefix} started listening on port #{port} with PID #{pid}")
 
       loop_acceptor(socket)
     else
@@ -36,8 +35,8 @@ defmodule Faulty.TCP.Acceptor do
     loop_acceptor(socket)
   end
 
-  defp listen(address, port) do
-    opts = TCP.Utils.opts(address)
+  defp listen(port) do
+    opts = TCP.Utils.opts()
     :gen_tcp.listen(port, opts)
   end
 end
