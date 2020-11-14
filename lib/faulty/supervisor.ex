@@ -4,8 +4,8 @@ defmodule Faulty.Supervisor do
 
   @prefix "Supervisor"
 
-  def start_link(opts) do
-    DynamicSupervisor.start_link(__MODULE__, opts, name: __MODULE__)
+  def start_link(_opts) do
+    DynamicSupervisor.start_link(__MODULE__, [], name: __MODULE__)
   end
 
   def start_child(child_spec) do

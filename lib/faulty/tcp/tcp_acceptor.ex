@@ -9,7 +9,7 @@ defmodule Faulty.TCP.Acceptor do
     Task.start_link(__MODULE__, :accept, [port])
   end
 
-  def accept(port) do
+  def accept(port) when is_integer(port) do
     with {:ok, socket} <- listen(port) do
       pid = inspect(self())
 
@@ -35,7 +35,7 @@ defmodule Faulty.TCP.Acceptor do
     loop_acceptor(socket)
   end
 
-  defp listen(port) do
+  defp listen(port) when is_integer(port) do
     opts = TCP.Utils.opts()
     :gen_tcp.listen(port, opts)
   end
