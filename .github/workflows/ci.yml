@@ -16,5 +16,9 @@ jobs:
         with:
           otp-version: ${{ env.OTP_VERSION }}
           elixir-version: ${{ env.ELIXIR_VERSION }}
-      - run: mix deps.get
-      - run: mix compile
+      - name: Get Dependencies
+        run: mix deps.get
+      - name: Compile
+        run: mix compile
+      - name: Test
+        run: mix test
