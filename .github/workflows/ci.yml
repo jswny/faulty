@@ -40,7 +40,7 @@ jobs:
         env:
           base-key: ${{ runner.os }}-${{ env.OTP_VERSION }}-${{ env.ELIXIR_VERSION }}-build-plt
         with:
-          path: _build/dev/dailyzer.plt
+          path: _build/dev/plt/dailyzer.plt
           key: ${{ env.base-key }}-${{ hashFiles('**/mix.lock') }}
       - name: Get Dependencies
         run: mix deps.get

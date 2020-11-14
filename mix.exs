@@ -30,7 +30,7 @@ defmodule Faulty.MixProject do
   end
 
   defp dialyzer() do
-    plt_core_path = "_build/#{Mix.env()}"
+    plt_core_path = "_build/#{Mix.env()}/plt"
 
     [
       plt_core_path: plt_core_path,
