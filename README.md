@@ -1,21 +1,5 @@
 # Faulty
+Simple, zero-dependency, multithreaded, fault-tolerant servers in Elixir. Faulty is intended to be used as a working, holistic example for writing simple servers in Elixir.
 
-**TODO: Add description**
-
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `faulty` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:faulty, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/faulty](https://hexdocs.pm/faulty).
-
+## Running
+You can run Faulty with `mix run --no-halt`.
